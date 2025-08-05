@@ -2,7 +2,7 @@
 
 namespace LibraryManagementSystem.Models
 {
-    public class BookRequest: ISoftDelete
+    public class BookRequest: ISoftDelete, IEntity
     {
         public int Id { get; set; }
         public string BookName { get; set; } = string.Empty;

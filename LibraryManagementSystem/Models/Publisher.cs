@@ -2,7 +2,7 @@
 
 namespace LibraryManagementSystem.Models
 {
-    public class Publisher: ISoftDelete
+    public class Publisher: ISoftDelete, IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

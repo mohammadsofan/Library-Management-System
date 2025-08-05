@@ -2,7 +2,7 @@
 
 namespace LibraryManagementSystem.Models
 {
-    public class Review: ISoftDelete
+    public class Review: ISoftDelete, IEntity
     {
         public int Id { get; set; }
         public int Rate { get; set; }

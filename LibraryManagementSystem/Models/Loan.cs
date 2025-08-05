@@ -3,7 +3,7 @@ using LibraryManagementSystem.Interfaces;
 
 namespace LibraryManagementSystem.Models
 {
-    public class Loan: ISoftDelete
+    public class Loan: ISoftDelete, IEntity
     {
         public int Id { get; set; }
         public DateTime LoanDate { get; set; }

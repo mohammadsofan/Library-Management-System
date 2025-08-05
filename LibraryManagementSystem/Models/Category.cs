@@ -2,7 +2,7 @@
 
 namespace LibraryManagementSystem.Models
 {
-    public class Category: ISoftDelete
+    public class Category: ISoftDelete, IEntity
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

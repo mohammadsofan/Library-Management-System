@@ -2,7 +2,7 @@
 
 namespace LibraryManagementSystem.Models
 {
-    public class BookCopy: ISoftDelete
+    public class BookCopy: ISoftDelete, IEntity
     {
         public int Id { get; set; }
         public int BookId { get; set; }

@@ -3,7 +3,7 @@ using LibraryManagementSystem.Interfaces;
 
 namespace LibraryManagementSystem.Models
 {
-    public class Fine: ISoftDelete
+    public class Fine: ISoftDelete, IEntity
     {
         public int Id { get; set; }
         public decimal TotalFee { get; set; }

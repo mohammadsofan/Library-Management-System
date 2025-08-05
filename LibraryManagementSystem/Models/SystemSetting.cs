@@ -1,6 +1,8 @@
-﻿namespace LibraryManagementSystem.Models
+﻿using LibraryManagementSystem.Interfaces;
+
+namespace LibraryManagementSystem.Models
 {
-    public class SystemSetting
+    public class SystemSetting: IEntity
     {
         public int Id { get; set; }
 
