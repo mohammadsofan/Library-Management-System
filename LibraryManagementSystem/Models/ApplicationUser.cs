@@ -7,6 +7,8 @@ namespace LibraryManagementSystem.Models
     public class ApplicationUser:IdentityUser,ISoftDelete
     {
         public string IdCardNumber {  get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public Gender Gender { get; set; }
         public string Address { get; set; } = string.Empty;
         public int CityId { get; set; }
