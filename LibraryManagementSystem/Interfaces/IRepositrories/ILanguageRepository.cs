@@ -1,6 +1,8 @@
-﻿namespace LibraryManagementSystem.Interfaces.IRepositrories
+﻿using LibraryManagementSystem.Models;
+
+namespace LibraryManagementSystem.Interfaces.IRepositrories
 {
-    public interface ILanguageRepository
+    public interface ILanguageRepository:IRepository<Language>
     {
     }
 }

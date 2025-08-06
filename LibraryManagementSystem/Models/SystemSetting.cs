@@ -2,7 +2,7 @@
 
 namespace LibraryManagementSystem.Models
 {
-    public class SystemSetting: IEntity
+    public class SystemSetting: IEntity,ISoftDelete
     {
         public int Id { get; set; }
 
@@ -11,5 +11,7 @@ namespace LibraryManagementSystem.Models
         public string Value { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime LastUpdatedAt { get; set; } = DateTime.UtcNow;
-    }
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; }
+}
 }

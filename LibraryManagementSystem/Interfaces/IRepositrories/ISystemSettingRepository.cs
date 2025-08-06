@@ -1,6 +1,8 @@
-﻿namespace LibraryManagementSystem.Interfaces.IRepositrories
+﻿using LibraryManagementSystem.Models;
+
+namespace LibraryManagementSystem.Interfaces.IRepositrories
 {
-    public interface ISystemSettingRepository
+    public interface ISystemSettingRepository:IRepository<SystemSetting>
     {
     }
 }
