@@ -14,7 +14,7 @@ namespace LibraryManagementSystem.Repositories
             _context = context;
             _dbSet = context.Set<T>();
         }
-        public async Task<T> CreateAsync(T entity)
+        public virtual async Task<T> CreateAsync(T entity)
         {
             entity.CreatedAt = DateTime.UtcNow;
             entity.LastUpdatedAt = DateTime.UtcNow;
@@ -23,7 +23,7 @@ namespace LibraryManagementSystem.Repositories
             return entity;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
             var entity = await _dbSet.FindAsync(id);
             if(entity == null)
@@ -36,19 +36,19 @@ namespace LibraryManagementSystem.Repositories
             return true;
         }
 
-        public async Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T, bool>> filter)
+        public virtual async Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T, bool>> filter)
         {
             var entities = await _dbSet.Where(filter).ToListAsync();
             return entities;
         }
 
-        public async Task<T?> GetOneByFilterAsync(Expression<Func<T, bool>> filter)
+        public virtual async Task<T?> GetOneByFilterAsync(Expression<Func<T, bool>> filter)
         {
             var entity = await _dbSet.FirstOrDefaultAsync(filter);
             return entity;
         }
 
-        public async Task<bool> UpdateAsync(int id, T entity)
+        public virtual async Task<bool> UpdateAsync(int id, T entity)
         {
             var existedEntity = await _dbSet.FindAsync(id);
             if (existedEntity == null)
@@ -61,7 +61,7 @@ namespace LibraryManagementSystem.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task SaveChangesAsync()
+        public virtual async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }

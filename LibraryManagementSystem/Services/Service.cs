@@ -15,7 +15,7 @@ namespace LibraryManagementSystem.Services
             _repository = repository;
         }
 
-        public async Task<ServiceResult<TResponse>> CreateAsync(TRequest requestDto)
+        public virtual async Task<ServiceResult<TResponse>> CreateAsync(TRequest requestDto)
         {
             var mappedEntity = requestDto.Adapt<TEntity>();
             var entity = await _repository.CreateAsync(mappedEntity);
@@ -24,7 +24,7 @@ namespace LibraryManagementSystem.Services
 
         }
 
-        public async Task<ServiceResult> DeleteAsync(int id)
+        public virtual async Task<ServiceResult> DeleteAsync(int id)
         {
             var result = await _repository.DeleteAsync(id);
             if (!result)
@@ -36,14 +36,14 @@ namespace LibraryManagementSystem.Services
 
         }
 
-        public async Task<ServiceResult<ICollection<TResponse>>> GetAllByFilterAsync(Expression<Func<TEntity, bool>> filter)
+        public virtual async Task<ServiceResult<ICollection<TResponse>>> GetAllByFilterAsync(Expression<Func<TEntity, bool>> filter)
         {
             var entities = await _repository.GetAllByFilterAsync(filter);
             var responseDto = entities.Adapt<ICollection<TResponse>>();
             return ServiceResult<ICollection<TResponse>>.Ok(responseDto, "Data retrived successfully!");
         }
 
-        public async Task<ServiceResult<TResponse>> GetOneByFilterAsync(Expression<Func<TEntity, bool>> filter)
+        public virtual async Task<ServiceResult<TResponse>> GetOneByFilterAsync(Expression<Func<TEntity, bool>> filter)
         {
             var entity = await _repository.GetOneByFilterAsync(filter);
             if(entity is null)
@@ -55,7 +55,7 @@ namespace LibraryManagementSystem.Services
             return ServiceResult<TResponse>.Ok(responseDto, "Data retrived successfully!");
         }
 
-        public async Task<ServiceResult> UpdateAsync(int id, TRequest requestDto)
+        public virtual async Task<ServiceResult> UpdateAsync(int id, TRequest requestDto)
         {
             var entity = requestDto.Adapt<TEntity>();
             var result = await _repository.UpdateAsync(id, entity);

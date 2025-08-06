@@ -153,7 +153,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Authors", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Book", b =>
@@ -216,7 +216,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasIndex("PublisherId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.BookCopy", b =>
@@ -253,7 +253,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("BookCopies");
+                    b.ToTable("BookCopies", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.BookRequest", b =>
@@ -293,7 +293,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasIndex("LanguageId");
 
-                    b.ToTable("BookRequests");
+                    b.ToTable("BookRequests", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Category", b =>
@@ -326,7 +326,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.City", b =>
@@ -355,7 +355,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Fine", b =>
@@ -391,7 +391,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasIndex("LoanId");
 
-                    b.ToTable("Fines");
+                    b.ToTable("Fines", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Language", b =>
@@ -420,7 +420,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Languages");
+                    b.ToTable("Languages", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Loan", b =>
@@ -473,7 +473,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Loans");
+                    b.ToTable("Loans", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Publisher", b =>
@@ -506,7 +506,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Publishers");
+                    b.ToTable("Publishers", (string)null);
                 });
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Review", b =>
@@ -548,7 +548,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("Reviews", t =>
+                    b.ToTable("Reviews", null, t =>
                         {
                             t.HasCheckConstraint("CK_Review_Rate_Range", "[Rate] >=1 and [Rate] <=5");
                         });
@@ -584,7 +584,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SystemSettings");
+                    b.ToTable("SystemSettings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
