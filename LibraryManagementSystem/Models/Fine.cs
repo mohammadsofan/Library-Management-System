@@ -6,7 +6,7 @@ namespace LibraryManagementSystem.Models
     public class Fine: ISoftDelete, IEntity
     {
         public int Id { get; set; }
-        public decimal TotalFee { get; set; }
+        public decimal? TotalPaid { get; set; }
         public FineStatus FineStatus { get; set; }
         public int LoanId { get; set; }
         public Loan? Loan { get; set; }

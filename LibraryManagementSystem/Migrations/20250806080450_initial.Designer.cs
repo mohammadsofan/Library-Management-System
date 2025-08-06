@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryManagementSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250805174805_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250806080450_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,11 +153,11 @@ namespace LibraryManagementSystem.Migrations
 
             modelBuilder.Entity("LibraryManagementSystem.Models.Book", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AuthorId")
                         .HasColumnType("int");
@@ -229,9 +229,6 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("BookId1")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -249,7 +246,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId1");
+                    b.HasIndex("BookId");
 
                     b.ToTable("BookCopies");
                 });
@@ -382,7 +379,7 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<int>("LoanId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalFee")
+                    b.Property<decimal?>("TotalPaid")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -436,8 +433,8 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<int>("BookCopyId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("BookId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -522,9 +519,6 @@ namespace LibraryManagementSystem.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("BookId1")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -547,7 +541,7 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("BookId1");
+                    b.HasIndex("BookId");
 
                     b.ToTable("Reviews", t =>
                         {
@@ -563,9 +557,15 @@ namespace LibraryManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Key")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -759,7 +759,9 @@ namespace LibraryManagementSystem.Migrations
                 {
                     b.HasOne("LibraryManagementSystem.Models.Book", "Book")
                         .WithMany()
-                        .HasForeignKey("BookId1");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
                 });
@@ -827,7 +829,9 @@ namespace LibraryManagementSystem.Migrations
 
                     b.HasOne("LibraryManagementSystem.Models.Book", "Book")
                         .WithMany("Reviews")
-                        .HasForeignKey("BookId1");
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
 
