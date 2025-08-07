@@ -10,8 +10,8 @@ namespace LibraryManagementSystem.Models
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public Gender Gender { get; set; }
-        public string Address { get; set; } = string.Empty;
-        public int CityId { get; set; }
+        public string? Address { get; set; } = string.Empty;
+        public int? CityId { get; set; }
         public City? City { get; set; }
         public DateTime CreatedAt {get; set; } = DateTime.UtcNow;
         public DateTime LastUpdatedAt { get; set;} = DateTime.UtcNow;

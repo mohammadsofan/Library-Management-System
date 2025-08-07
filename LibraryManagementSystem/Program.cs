@@ -1,6 +1,8 @@
 
 using LibraryManagementSystem.Data;
+using LibraryManagementSystem.Interfaces;
 using LibraryManagementSystem.Models;
+using LibraryManagementSystem.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +13,7 @@ namespace LibraryManagementSystem
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +51,7 @@ namespace LibraryManagementSystem
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!))
                     };
                 });
+            builder.Services.AddScoped<IDBInitializer,DBInitializer>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -64,7 +67,11 @@ namespace LibraryManagementSystem
 
 
             app.MapControllers();
-
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
+                await dbInitializer.Initialize();
+            }
             app.Run();
         }
     }
