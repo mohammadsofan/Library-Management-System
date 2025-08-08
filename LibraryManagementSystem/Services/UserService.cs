@@ -1,9 +1,11 @@
 ﻿using LibraryManagementSystem.Dtos.Requests;
+using LibraryManagementSystem.Dtos.Responses;
 using LibraryManagementSystem.Interfaces.IRepositrories;
 using LibraryManagementSystem.Interfaces.IServices;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Wrappers;
 using Mapster;
+using System.Linq.Expressions;
 
 namespace LibraryManagementSystem.Services
 {
@@ -45,6 +47,22 @@ namespace LibraryManagementSystem.Services
             string token = _tokenService.GetToken(user.Id,user.Email!,role);
             return ServiceResult<object>.Ok(new { token }, "login succeeded");
 
+        }
+        public async Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser,bool>> filter)
+        {
+            var users = await _userRepository.GetAllUsersByFilterAsync(filter);
+            return ServiceResult<ICollection<ApplicationUserResponseDto>>.
+                Ok(users.Adapt<ICollection<ApplicationUserResponseDto>>(), "Users retrieved successfully!");
+        }
+        public async Task<ServiceResult<ApplicationUserResponseDto>> GetOneUserByFilterAsync(Expression<Func<ApplicationUser, bool>> filter)
+        {
+            var user = await _userRepository.GetOneUserByFilterAsync(filter);
+            if(user is null)
+            {
+                return ServiceResult<ApplicationUserResponseDto>.Fail("User not found", new List<string>() { "User not found" });
+            }
+            return ServiceResult<ApplicationUserResponseDto>.
+                Ok(user.Adapt<ApplicationUserResponseDto>(), "User retrieved successfully!");
         }
 
     }
