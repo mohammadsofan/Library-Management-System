@@ -90,7 +90,15 @@ namespace LibraryManagementSystem.Repositories
             }
             return await _userManager.ChangePasswordAsync(user,oldPassword, newPassword);
         }
-
+        public async Task<IdentityResult> ConfirmEmailAsync(string userId,string token)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user is null)
+            {
+                return IdentityResult.Failed(new IdentityError() { Code = "NotFound", Description = "User not found" });
+            }
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
         public async Task<string?> GetUserRoleAsync(ApplicationUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
