@@ -11,6 +11,7 @@ namespace LibraryManagementSystem.Interfaces.IRepositrories
         Task<IdentityResult> DeleteUserAsync(string id);
         Task<ICollection<ApplicationUser>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser,bool>> filter);
         Task<ApplicationUser?> GetOneUserByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
+        Task<string?> GetUserRole(ApplicationUser user);
         Task<bool> CheckPasswordAsync(ApplicationUser applicationUser,string password);
         Task<IdentityResult> ChangePasswordAsync(ApplicationUser applicationUser, string oldPassword, string newPassowrd);
 

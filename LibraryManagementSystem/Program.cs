@@ -72,6 +72,7 @@ namespace LibraryManagementSystem
                 var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
                 await dbInitializer.Initialize();
             }
+            
             app.Run();
         }
     }

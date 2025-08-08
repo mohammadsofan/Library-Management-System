@@ -35,9 +35,8 @@ namespace LibraryManagementSystem.Repositories
                     await _roleManager.CreateAsync(new IdentityRole() { Name = "User" });
                 }
                 await _userManager.AddToRoleAsync(user, "User");
-                return IdentityResult.Success;
             }
-            return IdentityResult.Failed();
+            return result;
         }
 
         public async Task<IdentityResult> DeleteUserAsync(string id)
@@ -80,6 +79,12 @@ namespace LibraryManagementSystem.Repositories
         public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser applicationUser,string oldPassword,string newPassowrd)
         {
             return await _userManager.ChangePasswordAsync(applicationUser,oldPassword,newPassowrd);
+        }
+
+        public async Task<string?> GetUserRole(ApplicationUser user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+            return roles.FirstOrDefault();
         }
     }
 }
