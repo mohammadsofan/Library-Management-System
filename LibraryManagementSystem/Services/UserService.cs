@@ -6,6 +6,7 @@ using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Wrappers;
 using Mapster;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace LibraryManagementSystem.Services
 {
@@ -43,10 +44,18 @@ namespace LibraryManagementSystem.Services
             {
                 return ServiceResult<object>.Fail("Login failed", new List<string>() { invalidMessage });
             }
-            var role = await _userRepository.GetUserRole(user)??"User";
+            var role = await _userRepository.GetUserRoleAsync(user)??"User";
             string token = _tokenService.GetToken(user.Id,user.Email!,role);
             return ServiceResult<object>.Ok(new { token }, "login succeeded");
 
+        }
+        public async Task<ServiceResult> ChangeUserPasswordAsync(ChangeUserPasswordRequestDto request)
+        {
+            var result = await _userRepository.ChangePasswordAsync(request.UserId,request.OldPassword,request.NewPassword);
+            if (!result.Succeeded) { 
+                return ServiceResult.Fail("Change password failed", result.Errors.Select(e=>e.Description).ToList());
+            }
+            return ServiceResult.Ok("Password changed successfully!");
         }
         public async Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser,bool>> filter)
         {

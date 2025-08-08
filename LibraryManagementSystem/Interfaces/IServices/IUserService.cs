@@ -10,8 +10,8 @@ namespace LibraryManagementSystem.Interfaces.IServices
     {
         Task<ServiceResult> RegisterUserAsync(RegisterUserRequestDto request);
         Task<ServiceResult<object>> LoginUserAsync(LoginUserRequestDto request);
+        Task<ServiceResult> ChangeUserPasswordAsync(ChangeUserPasswordRequestDto request);
         Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
         Task<ServiceResult<ApplicationUserResponseDto>> GetOneUserByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
-
     }
 }

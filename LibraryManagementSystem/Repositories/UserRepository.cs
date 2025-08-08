@@ -76,12 +76,22 @@ namespace LibraryManagementSystem.Repositories
             existingUser.LastUpdatedAt = DateTime.UtcNow;
             return await _userManager.UpdateAsync(existingUser);
         }
-        public async Task<IdentityResult> ChangePasswordAsync(ApplicationUser applicationUser,string oldPassword,string newPassowrd)
+        public async Task<IdentityResult> ChangePasswordAsync(string userId,string oldPassword,string newPassword)
         {
-            return await _userManager.ChangePasswordAsync(applicationUser,oldPassword,newPassowrd);
+            var user = await _userManager.FindByIdAsync(userId);
+            if(user is null)
+            {
+                return IdentityResult.Failed(new IdentityError() { Code="NotFound",Description="User not found"});
+            }
+            if(oldPassword == newPassword)
+            {
+                return IdentityResult.Failed(new IdentityError() { Code = "samePassword", Description = "New password cannot be the same as the old password" });
+
+            }
+            return await _userManager.ChangePasswordAsync(user,oldPassword, newPassword);
         }
 
-        public async Task<string?> GetUserRole(ApplicationUser user)
+        public async Task<string?> GetUserRoleAsync(ApplicationUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
             return roles.FirstOrDefault();
