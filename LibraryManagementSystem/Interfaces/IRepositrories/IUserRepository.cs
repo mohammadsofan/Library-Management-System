@@ -13,6 +13,8 @@ namespace LibraryManagementSystem.Interfaces.IRepositrories
         Task<ApplicationUser?> GetOneUserByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
         Task<string> GetUserEmailConfirmationTokenAsync(ApplicationUser user);
         Task<IdentityResult> ConfirmEmailAsync(string userId, string token);
+        Task<string> GeneratePasswordResetCodeAsync(ApplicationUser user);
+        Task<IdentityResult> ConfirmPasswordResetByCodeAsync(string email, string code, string newPassword);
         Task<string?> GetUserRoleAsync(ApplicationUser user);
         Task<bool> CheckPasswordAsync(ApplicationUser applicationUser,string password);
         Task<IdentityResult> ChangePasswordAsync(string userId, string oldPassword, string newPassowrd);

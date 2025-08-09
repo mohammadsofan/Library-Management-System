@@ -19,6 +19,7 @@ namespace LibraryManagementSystem.Models
         public DateTime? DeletedAt { get; set; }
         public ICollection<Loan> Loans { get; set; } = new List<Loan>();
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<PasswordResetCode> PasswordResetCodes { get; set; } = new List<PasswordResetCode>();
 
     }
 }

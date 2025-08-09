@@ -38,5 +38,6 @@ namespace LibraryManagementSystem.Data
         public DbSet<Fine> Fines { get; set; }
         public DbSet<Review> Reviews { get; set;}
         public DbSet<SystemSetting> SystemSettings { get; set; }
+        public DbSet<PasswordResetCode> PasswordResetCodes { get; set; }
     }
 }
