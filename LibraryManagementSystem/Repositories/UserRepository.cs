@@ -90,7 +90,7 @@ namespace LibraryManagementSystem.Repositories
             }
             return await _userManager.ChangePasswordAsync(user,oldPassword, newPassword);
         }
-        public async Task<string> GetUserEmailConfirmationToken(ApplicationUser user)
+        public async Task<string> GetUserEmailConfirmationTokenAsync(ApplicationUser user)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
