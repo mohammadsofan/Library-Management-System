@@ -43,7 +43,7 @@ namespace LibraryManagementSystem.Services
             var result = await _userRepository.CreateUserAsync(user, request.Password);
             if(result.Succeeded)
             {
-                var confirmEmailToken = await _userRepository.GetUserEmailConfirmationToken(user);
+                var confirmEmailToken = await _userRepository.GetUserEmailConfirmationTokenAsync(user);
                 var encodedToken = WebUtility.UrlEncode(confirmEmailToken);
                 var confirmationUrl = _linkGenerator.GetUriByAction(
                     httpContext:_httpContextAccessor.HttpContext!,
