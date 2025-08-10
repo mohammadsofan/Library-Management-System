@@ -101,7 +101,55 @@ namespace LibraryManagementSystem.Services
             }
             return ServiceResult.Ok("Confirmation succeeded");
         }
-            
+        public async Task<ServiceResult> SendPasswordResetCodeAsync(SendPasswordResetCodeRequestDto request)
+        {
+            var user = await _userRepository.GetOneUserByFilterAsync(u => u.Email!.ToLower() == request.Email.ToLower());
+            if (user?.Email is null)
+            {
+                return ServiceResult.Fail(
+                    "Failed to send reset password code",
+                    new List<string> { "User not found or invalid/missing email" }
+                );
+            }
+            var code = await _userRepository.GeneratePasswordResetCodeAsync(user);
+            var htmlMessage = $@"
+                <div style=""font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto;"">
+                    <h2 style=""color: #333;"">Reset Your Password</h2>
+                    <p>Hello,</p>
+                    <p>We received a request to reset your password for your account associated with this email: <strong>{user.Email}</strong>.</p>
+                    <p>Please use the verification code below to reset your password:</p>
+                    <div style=""background-color: #f5f5f5; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 2px; border-radius: 8px; color: #333; margin: 20px 0;"">
+                        {code}
+                    </div>
+                    <p>This code will expire in <strong>10 minutes</strong>.</p>
+                    <p>If you didn't request this, you can safely ignore this email.</p>
+                    <hr style=""margin: 30px 0;"" />
+                    <p style=""font-size: 0.8em; color: #999;"">© {DateTime.UtcNow.Year} Sofan-Library. All rights reserved.</p>
+                </div>";
+
+            await _emailSender.SendEmailAsync(user.Email, "Reset Password Verification Code", htmlMessage);
+            return ServiceResult.Ok("Reset password verification code sent successfully!");
+        }
+        public async Task<ServiceResult> ConfirmPasswordResetAsync(ConfirmPasswordResetRequestDto request)
+        {
+            var user = await _userRepository.GetOneUserByFilterAsync(u => u.Email!.ToLower() == request.Email.ToLower());
+            if (user?.Email is null)
+            {
+                return ServiceResult.Fail(
+                    "Failed to send reset password code",
+                    new List<string> { "User not found or invalid/missing email" }
+                );
+            }
+            var result = await _userRepository.ConfirmPasswordResetByCodeAsync(user.Email, request.Code, request.NewPassword);
+            if (result.Succeeded)
+            {
+                return ServiceResult.Ok("Password has been reset successfully!");
+            }
+            else
+            {
+                return ServiceResult.Fail("Failed to reset password", result.Errors.Select(e => e.Description).ToList());
+            }
+        }
         public async Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser,bool>> filter)
         {
             var users = await _userRepository.GetAllUsersByFilterAsync(filter);
