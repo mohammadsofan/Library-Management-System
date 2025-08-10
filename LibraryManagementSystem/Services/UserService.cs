@@ -74,10 +74,24 @@ namespace LibraryManagementSystem.Services
             {
                 return ServiceResult<object>.Fail("Login failed", new List<string>() { invalidMessage });
             }
-            var checkPassword = await _userRepository.CheckPasswordAsync(user, request.Password);
-            if (!checkPassword)
+            var checkResult = await _userRepository.CheckPasswordSignInAsync(user, request.Password);
+            if (checkResult.IsLockedOut)
+            {
+                return ServiceResult<object>.Fail("Login failed", new List<string>() { $"Your account is locked till {user.LockoutEnd}" });
+
+            }
+            else if(checkResult.RequiresTwoFactor)
+            {
+                return ServiceResult<object>.Fail("Login failed", new List<string>() { "Two-factor authentication required." });
+            }
+            else if (checkResult.IsNotAllowed)
+            {
+                return ServiceResult<object>.Fail("Login failed", new List<string>() { "Confirm your email before logging in." });
+            }
+            else if (!checkResult.Succeeded)
             {
                 return ServiceResult<object>.Fail("Login failed", new List<string>() { invalidMessage });
+
             }
             var role = await _userRepository.GetUserRoleAsync(user)??"User";
             string token = _tokenService.GetToken(user.Id,user.Email!,role);

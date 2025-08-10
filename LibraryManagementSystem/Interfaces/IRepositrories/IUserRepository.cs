@@ -18,6 +18,7 @@ namespace LibraryManagementSystem.Interfaces.IRepositrories
         Task<string?> GetUserRoleAsync(ApplicationUser user);
         Task<bool> CheckPasswordAsync(ApplicationUser applicationUser,string password);
         Task<IdentityResult> ChangePasswordAsync(string userId, string oldPassword, string newPassowrd);
+        Task<SignInResult> CheckPasswordSignInAsync(ApplicationUser applicationUser, string password);
 
     }
 }

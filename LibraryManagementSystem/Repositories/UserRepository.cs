@@ -11,14 +11,17 @@ namespace LibraryManagementSystem.Repositories
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
 
         public UserRepository(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
+            SignInManager<ApplicationUser> signInManager,
             ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
             _context = context;
         }
 
@@ -26,7 +29,10 @@ namespace LibraryManagementSystem.Repositories
         {
             return await _userManager.CheckPasswordAsync(applicationUser, password);
         }
-
+        public async Task<SignInResult> CheckPasswordSignInAsync(ApplicationUser applicationUser, string password)
+        {
+            return await _signInManager.CheckPasswordSignInAsync(applicationUser, password,true);
+        }
         public async Task<IdentityResult> CreateUserAsync(ApplicationUser user,string password)
         {
             user.CreatedAt = DateTime.Now;
