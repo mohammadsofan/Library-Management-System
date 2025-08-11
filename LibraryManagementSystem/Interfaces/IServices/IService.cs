@@ -9,6 +9,6 @@ namespace LibraryManagementSystem.Interfaces.IServices
         Task<ServiceResult> UpdateAsync(int id, TRequest model);
         Task<ServiceResult> DeleteAsync(int id);
         Task<ServiceResult<TResponse>> GetOneByFilterAsync(Expression<Func<TEntity, bool>> filter);
-        Task<ServiceResult<ICollection<TResponse>>> GetAllByFilterAsync(Expression<Func<TEntity, bool>> filter);
+        Task<ServiceResult<ICollection<TResponse>>> GetAllByFilterAsync(Expression<Func<TEntity, bool>>? filter=null);
     }
 }

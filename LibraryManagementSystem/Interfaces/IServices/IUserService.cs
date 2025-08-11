@@ -14,7 +14,7 @@ namespace LibraryManagementSystem.Interfaces.IServices
         Task<ServiceResult> ConfirmEmailAsync(ConfirmEmailRequestDto request);
         Task<ServiceResult> SendPasswordResetCodeAsync(SendPasswordResetCodeRequestDto request);
         Task<ServiceResult> ConfirmPasswordResetAsync(ConfirmPasswordResetRequestDto request);
-        Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
+        Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser, bool>>? filter=null);
         Task<ServiceResult<ApplicationUserResponseDto>> GetOneUserByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
     }
 }

@@ -16,54 +16,117 @@ namespace LibraryManagementSystem.Repositories
         }
         public virtual async Task<T> CreateAsync(T entity)
         {
-            entity.CreatedAt = DateTime.UtcNow;
-            entity.LastUpdatedAt = DateTime.UtcNow;
-            await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity), $"Entity cannot be null.");
+            }
+            try
+            {
+                entity.CreatedAt = DateTime.UtcNow;
+                entity.LastUpdatedAt = DateTime.UtcNow;
+                await _dbSet.AddAsync(entity);
+                await SaveChangesAsync();
+                return entity;
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
         }
 
         public virtual async Task<bool> DeleteAsync(int id)
         {
-            var entity = await _dbSet.FindAsync(id);
-            if(entity == null)
+            try
             {
-                return false;
+                var entity = await _dbSet.FindAsync(id);
+                if (entity == null)
+                {
+                    return false;
+                }
+                entity.IsDeleted = true;
+                entity.DeletedAt = DateTime.UtcNow;
+                await SaveChangesAsync();
+                return true;
             }
-            entity.IsDeleted = true;
-            entity.DeletedAt = DateTime.UtcNow;
-            await _context.SaveChangesAsync();
-            return true;
+            catch (Exception)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
         }
-
-        public virtual async Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T, bool>> filter)
+        public virtual async Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T, bool>>? filter = null)
         {
-            var entities = await _dbSet.Where(filter).ToListAsync();
-            return entities;
+            try
+            {
+                IQueryable<T> query = _dbSet;
+                if (filter != null)
+                {
+                    query = query.Where(filter);
+                }
+                var entities = await query.ToListAsync();
+                return entities;
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
         }
 
         public virtual async Task<T?> GetOneByFilterAsync(Expression<Func<T, bool>> filter)
         {
-            var entity = await _dbSet.FirstOrDefaultAsync(filter);
-            return entity;
+            if (filter == null)
+            {
+                throw new ArgumentNullException(nameof(filter), "Filter expression cannot be null.");
+            }
+            try
+            {
+                var entity = await _dbSet.FirstOrDefaultAsync(filter);
+                return entity;
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
         }
 
         public virtual async Task<bool> UpdateAsync(int id, T entity)
         {
-            var existedEntity = await _dbSet.FindAsync(id);
-            if (existedEntity == null)
+            if (entity == null)
             {
-                return false;
+                throw new ArgumentNullException(nameof(entity), "Entity cannot be null.");
             }
-            entity.LastUpdatedAt = DateTime.UtcNow;
-            entity.Id = existedEntity.Id;
-            _context.Entry(existedEntity).CurrentValues.SetValues(entity);
-            await _context.SaveChangesAsync();
-            return true;
+            try
+            {
+                var existedEntity = await _dbSet.FindAsync(id);
+                if (existedEntity == null)
+                {
+                    return false;
+                }
+                entity.LastUpdatedAt = DateTime.UtcNow;
+                entity.Id = existedEntity.Id;
+                _context.Entry(existedEntity).CurrentValues.SetValues(entity);
+                await SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
         }
         public virtual async Task SaveChangesAsync()
         {
-            await _context.SaveChangesAsync();
+            try { 
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
         }
     }
 }
