@@ -9,7 +9,7 @@ namespace LibraryManagementSystem.Interfaces.IRepositrories
         Task<IdentityResult> CreateUserAsync(ApplicationUser user,string passowrd);
         Task<IdentityResult> UpdateUserAsync(string id,ApplicationUser user);
         Task<IdentityResult> DeleteUserAsync(string id);
-        Task<ICollection<ApplicationUser>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser,bool>> filter);
+        Task<ICollection<ApplicationUser>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser,bool>>? filter=null);
         Task<ApplicationUser?> GetOneUserByFilterAsync(Expression<Func<ApplicationUser, bool>> filter);
         Task<string> GetUserEmailConfirmationTokenAsync(ApplicationUser user);
         Task<IdentityResult> ConfirmEmailAsync(string userId, string token);

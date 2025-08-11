@@ -8,7 +8,7 @@ namespace LibraryManagementSystem.Interfaces.IRepositrories
         Task<bool> DeleteAsync(int id);
         Task<bool> UpdateAsync(int id,T entity);
         Task<T?> GetOneByFilterAsync(Expression<Func<T, bool>> filter);
-        Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T,bool>> filter);
+        Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T,bool>>? filter=null);
         Task SaveChangesAsync();
     }
 }
