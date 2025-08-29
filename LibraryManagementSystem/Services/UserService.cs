@@ -1,17 +1,14 @@
 ﻿using LibraryManagementSystem.Dtos.Requests;
 using LibraryManagementSystem.Dtos.Responses;
+using LibraryManagementSystem.Enums;
 using LibraryManagementSystem.Interfaces.IRepositrories;
 using LibraryManagementSystem.Interfaces.IServices;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Wrappers;
 using Mapster;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Routing;
 using System.Linq.Expressions;
 using System.Net;
-using System.Runtime.CompilerServices;
-using LibraryManagementSystem.Enums;
 
 namespace LibraryManagementSystem.Services
 {
@@ -44,15 +41,15 @@ namespace LibraryManagementSystem.Services
             {
                 var user = request.Adapt<ApplicationUser>();
                 var result = await _userRepository.CreateUserAsync(user, request.Password);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     var confirmEmailToken = await _userRepository.GetUserEmailConfirmationTokenAsync(user);
                     var encodedToken = WebUtility.UrlEncode(confirmEmailToken);
                     var confirmationUrl = _linkGenerator.GetUriByAction(
-                        httpContext:_httpContextAccessor.HttpContext!,
-                        action:"ConfirmEmail",
-                        controller:"User",
-                        values:new { userId = user.Id, encodedToken }
+                        httpContext: _httpContextAccessor.HttpContext!,
+                        action: "ConfirmEmail",
+                        controller: "User",
+                        values: new { userId = user.Id, encodedToken }
                         );
                     var htmlMessage = $@"
                         <h2>Welcome Sofan-Library, {user.FirstName} {user.LastName}!</h2>
@@ -66,7 +63,7 @@ namespace LibraryManagementSystem.Services
                     await _emailSender.SendEmailAsync(user.Email!, "Welcome to Sofan-Library!", htmlMessage);
                     return ServiceResult.Ok("User registered successfully!");
                 }
-                return ServiceResult.Fail("Registration failed", result.Errors.Select(e=>e.Description).ToList());
+                return ServiceResult.Fail("Registration failed", result.Errors.Select(e => e.Description).ToList(), ServiceResultStatus.ValidationError);
             }
             catch (Exception ex)
             {
@@ -79,9 +76,9 @@ namespace LibraryManagementSystem.Services
             {
                 string invalidMessage = "Invalid email/username or password";
                 var emailOrUsername = request.EmailOrUsername.ToLower();
-                var user = await _userRepository.GetOneUserByFilterAsync(u=>
+                var user = await _userRepository.GetOneUserByFilterAsync(u =>
                 emailOrUsername == u.UserName!.ToLower() || emailOrUsername == u.Email!.ToLower());
-                if(user is null)
+                if (user is null)
                 {
                     return ServiceResult<object>.Fail("Login failed", new List<string>() { invalidMessage }, ServiceResultStatus.NotFound);
                 }
@@ -90,7 +87,7 @@ namespace LibraryManagementSystem.Services
                 {
                     return ServiceResult<object>.Fail("Login failed", new List<string>() { $"Your account is locked till {user.LockoutEnd}" }, ServiceResultStatus.ValidationError);
                 }
-                else if(checkResult.RequiresTwoFactor)
+                else if (checkResult.RequiresTwoFactor)
                 {
                     return ServiceResult<object>.Fail("Login failed", new List<string>() { "Two-factor authentication required." }, ServiceResultStatus.ValidationError);
                 }
@@ -102,8 +99,8 @@ namespace LibraryManagementSystem.Services
                 {
                     return ServiceResult<object>.Fail("Login failed", new List<string>() { invalidMessage }, ServiceResultStatus.NotFound);
                 }
-                var role = await _userRepository.GetUserRoleAsync(user)??"User";
-                string token = _tokenService.GetToken(user.Id,user.Email!,role);
+                var role = await _userRepository.GetUserRoleAsync(user) ?? "User";
+                string token = _tokenService.GetToken(user.Id, user.Email!, role);
                 return ServiceResult<object>.Ok(new { token }, "login succeeded");
             }
             catch (Exception ex)
@@ -115,9 +112,10 @@ namespace LibraryManagementSystem.Services
         {
             try
             {
-                var result = await _userRepository.ChangePasswordAsync(request.UserId,request.OldPassword,request.NewPassword);
-                if (!result.Succeeded) { 
-                    return ServiceResult.Fail("Change password failed", result.Errors.Select(e=>e.Description).ToList(), ServiceResultStatus.ValidationError);
+                var result = await _userRepository.ChangePasswordAsync(request.UserId, request.OldPassword, request.NewPassword);
+                if (!result.Succeeded)
+                {
+                    return ServiceResult.Fail("Change password failed", result.Errors.Select(e => e.Description).ToList(), ServiceResultStatus.ValidationError);
                 }
                 return ServiceResult.Ok("Password changed successfully!");
             }
@@ -130,7 +128,7 @@ namespace LibraryManagementSystem.Services
         {
             try
             {
-                var result = await _userRepository.ConfirmEmailAsync(request.UserId,request.Token);
+                var result = await _userRepository.ConfirmEmailAsync(request.UserId, request.Token);
                 if (!result.Succeeded)
                 {
                     return ServiceResult.Fail("Confirmation failed", result.Errors.Select(e => e.Description).ToList(), ServiceResultStatus.ValidationError);
@@ -208,7 +206,7 @@ namespace LibraryManagementSystem.Services
                 return ServiceResult.Fail("Failed to reset password", new List<string> { ex.Message });
             }
         }
-        public async Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser,bool>> filter)
+        public async Task<ServiceResult<ICollection<ApplicationUserResponseDto>>> GetAllUsersByFilterAsync(Expression<Func<ApplicationUser, bool>>? filter)
         {
             try
             {
@@ -226,7 +224,7 @@ namespace LibraryManagementSystem.Services
             try
             {
                 var user = await _userRepository.GetOneUserByFilterAsync(filter);
-                if(user is null)
+                if (user is null)
                 {
                     return ServiceResult<ApplicationUserResponseDto>.Fail("User not found", new List<string>() { "User not found" }, ServiceResultStatus.NotFound);
                 }
