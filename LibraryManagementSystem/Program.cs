@@ -1,10 +1,15 @@
 
 using LibraryManagementSystem.Data;
 using LibraryManagementSystem.Interfaces;
+using LibraryManagementSystem.Interfaces.IRepositrories;
+using LibraryManagementSystem.Interfaces.IServices;
 using LibraryManagementSystem.Models;
+using LibraryManagementSystem.Repositories;
+using LibraryManagementSystem.Services;
 using LibraryManagementSystem.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -51,7 +56,11 @@ namespace LibraryManagementSystem
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:SecretKey"]!))
                     };
                 });
-            builder.Services.AddScoped<IDBInitializer,DBInitializer>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IDBInitializer, DBInitializer>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -72,7 +81,7 @@ namespace LibraryManagementSystem
                 var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitializer>();
                 await dbInitializer.Initialize();
             }
-            
+
             app.Run();
         }
     }
