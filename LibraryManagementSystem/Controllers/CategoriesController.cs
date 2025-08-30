@@ -21,6 +21,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateCategoryAsync([FromBody] CategoryRequestDto request)
         {
             var result = await categoryService.CreateAsync(request);
