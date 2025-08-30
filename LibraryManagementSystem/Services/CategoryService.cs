@@ -26,7 +26,7 @@ namespace LibraryManagementSystem.Services
         }
         public override async Task<ServiceResult> UpdateAsync(int id, CategoryRequestDto requestDto)
         {
-            var isExist = await _repository.AnyAsync(c => c.Name.ToLower() == requestDto.Name.ToLower());
+            var isExist = await _repository.AnyAsync(c => c.Name.ToLower() == requestDto.Name.ToLower() && c.Name.ToLower() != requestDto.Name.ToLower());
             if (isExist)
             {
                 return ServiceResult.Fail("Category with the same name already exists.", new List<string> { "Duplicate category name." }, Enums.ServiceResultStatus.Conflict);
