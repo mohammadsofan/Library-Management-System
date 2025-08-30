@@ -13,7 +13,10 @@ namespace LibraryManagementSystem.Data
         {
             builder.Entity<Review>()
                 .ToTable(t => t.HasCheckConstraint("CK_Review_Rate_Range", "[Rate] >=1 and [Rate] <=5"));
-            foreach(var entityType in builder.Model.GetEntityTypes())
+            builder.Entity<Category>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+            foreach (var entityType in builder.Model.GetEntityTypes())
             {
                 if (typeof(ISoftDelete).IsAssignableFrom(entityType.ClrType))
                 {

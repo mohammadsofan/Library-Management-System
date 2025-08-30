@@ -1,4 +1,5 @@
-﻿using LibraryManagementSystem.Data;
+﻿using LibraryManagementSystem.Constants;
+using LibraryManagementSystem.Data;
 using LibraryManagementSystem.Interfaces.IRepositrories;
 using LibraryManagementSystem.Models;
 using Microsoft.AspNetCore.Identity;
@@ -58,11 +59,11 @@ namespace LibraryManagementSystem.Repositories
                 var result = await _userManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
-                    if (!await _roleManager.RoleExistsAsync("User"))
+                    if (!await _roleManager.RoleExistsAsync(ApplicationRoles.Member))
                     {
-                        await _roleManager.CreateAsync(new IdentityRole() { Name = "User" });
+                        await _roleManager.CreateAsync(new IdentityRole() { Name = ApplicationRoles.Member });
                     }
-                    await _userManager.AddToRoleAsync(user, "User");
+                    await _userManager.AddToRoleAsync(user, ApplicationRoles.Member);
                 }
                 return result;
             }

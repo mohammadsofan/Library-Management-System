@@ -19,7 +19,7 @@ namespace LibraryManagementSystem
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

@@ -117,6 +117,22 @@ namespace LibraryManagementSystem.Repositories
                 throw;
             }
         }
+        public virtual async Task<bool> AnyAsync(Expression<Func<T, bool>> filter)
+        {
+            if (filter == null)
+            {
+                throw new ArgumentNullException(nameof(filter), "Filter expression cannot be null.");
+            }
+            try
+            {
+                return await _dbSet.AnyAsync(filter);
+            }
+            catch (Exception)
+            {
+                // Log the exception or handle it as needed
+                throw;
+            }
+        }
         public virtual async Task SaveChangesAsync()
         {
             try { 

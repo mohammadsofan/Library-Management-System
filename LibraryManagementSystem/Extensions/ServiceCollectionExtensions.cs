@@ -17,7 +17,7 @@ namespace LibraryManagementSystem.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
+        public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             // Add services to the container.
 
@@ -53,6 +53,7 @@ namespace LibraryManagementSystem.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SecretKey"]!))
                     };
                 });
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IPublisherRepository, PublisherRepository>();
@@ -82,7 +83,6 @@ namespace LibraryManagementSystem.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IDBInitializer, DBInitializer>();
-            return services;
         }
     }
 }

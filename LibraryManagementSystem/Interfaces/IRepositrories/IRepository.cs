@@ -6,9 +6,10 @@ namespace LibraryManagementSystem.Interfaces.IRepositrories
     {
         Task<T> CreateAsync(T entity);
         Task<bool> DeleteAsync(int id);
-        Task<bool> UpdateAsync(int id,T entity);
+        Task<bool> UpdateAsync(int id, T entity);
         Task<T?> GetOneByFilterAsync(Expression<Func<T, bool>> filter);
-        Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T,bool>>? filter=null);
+        Task<ICollection<T>> GetAllByFilterAsync(Expression<Func<T, bool>>? filter = null);
+        Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
         Task SaveChangesAsync();
     }
 }

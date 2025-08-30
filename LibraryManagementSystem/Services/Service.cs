@@ -3,6 +3,7 @@ using LibraryManagementSystem.Interfaces.IRepositrories;
 using LibraryManagementSystem.Interfaces.IServices;
 using LibraryManagementSystem.Wrappers;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace LibraryManagementSystem.Services
