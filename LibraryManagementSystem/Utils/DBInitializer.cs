@@ -106,16 +106,16 @@ namespace LibraryManagementSystem.Utils
             {
                 _context.Categories.AddRange(new List<Category>()
                 {
-                    new Category(){ Name="Fiction"},
-                    new Category(){ Name="Non-Fiction"},
-                    new Category(){ Name="Science Fiction"},
-                    new Category(){ Name="Fantasy"},
-                    new Category(){ Name="Mystery"},
-                    new Category(){ Name="Biography"},
-                    new Category(){ Name="History"},
-                    new Category(){ Name="Romance"},
-                    new Category(){ Name="Horror"},
-                    new Category(){ Name="Self-Help"}
+                    new Category(){ Name="Fiction", Description="Literary works created from the imagination, not presented as fact."},
+                    new Category(){ Name="Non-Fiction", Description="Books based on facts, real events, and real people such as history or biography."},
+                    new Category(){ Name="Science Fiction", Description="Stories that often explore futuristic concepts, technology, space, and advanced science."},
+                    new Category(){ Name="Fantasy", Description="Books featuring magical worlds, mythical creatures, and supernatural elements."},
+                    new Category(){ Name="Mystery", Description="Stories centered on solving crimes, uncovering secrets, or unraveling puzzles."},
+                    new Category(){ Name="Biography", Description="Accounts of a person's life written by someone else."},
+                    new Category(){ Name="History", Description="Books that explore past events, civilizations, and significant historical periods."},
+                    new Category(){ Name="Romance", Description="Stories focusing on relationships, love, and emotional connections."},
+                    new Category(){ Name="Horror", Description="Fiction intended to evoke fear, dread, or suspense through dark and scary themes."},
+                    new Category(){ Name="Self-Help", Description="Books that provide advice and strategies for personal improvement and growth."}
                 });
                 await _context.SaveChangesAsync();
             }
